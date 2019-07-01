@@ -1,0 +1,23 @@
+- hosts: web
+  tasks: 
+   - name: execute date command
+     command: date
+     register: output
+   - debug: var=output
+   
+   - name: output of hosts file
+     command: cat /etc/hosts  
+     register: output1
+   - debug: var=output1
+
+   - name: server uptime 
+     command: uptime 
+     register: output2
+   - debug: var=output2
+
+   - name: Add date, file and uptime into file
+     lineinfile:
+         path: /opt/log.txt
+         line: "{{ output.stdout_lines }} {{ output1.stdout_lines }} {{ output2.stdout_lines }}"
+         create: yes 
+     delegate_to: localhost

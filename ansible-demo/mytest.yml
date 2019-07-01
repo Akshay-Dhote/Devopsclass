@@ -1,0 +1,25 @@
+- hosts: web #group name form the inventory
+  gather_facts: flase
+  vars:
+    pack_name: httpd
+    serv_name: httpd
+
+  tasks:
+    - name: Install {{ pack_name }}
+      yum: pkg={{ pack_name }} state=installed
+      become: yes
+      register: output
+
+    - debug: var=output
+
+    - name: print Successfull message
+      debug: msg="Installtion is successfull"
+      when: output is succeeded
+
+    - name: print Failure message
+      debug: msg="Installtion is failed"
+      when: output is failed
+
+    - name: Start {{ serv_name }}
+      service: name={{ serv_name }} state=started
+      become: yes

@@ -1,0 +1,15 @@
+- hosts: web #group name from the inventory
+ # user: ec2-user Server Auth
+#  sudo: true
+
+#  vars:
+#     pack_name: httpd
+#     serv_name: httpd
+  vars_prompt:
+   - name: pack_name
+     prompt: Enter the Package Name
+     default: telnet
+     #private: no 
+  tasks:
+   - name: Install {{ pack_name }}
+     yum: pkg={{ pack_name }} state=installed
